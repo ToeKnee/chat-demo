@@ -1,0 +1,30 @@
+# Simple Chat app
+
+
+
+## Backend
+
+## Running tests
+
+The test suite is set up using tox.
+
+    tox
+
+## Running the server
+
+### Bootstrap the server
+
+    cd backend
+    virtualenv env -p python3
+    source env/bin/activate
+    pip install -r requirements.txt
+
+### Run the server
+
+    ./manage.py runserver
+
+### Main Technologies
+
+* Python 3
+* Django 1.10
+* Django Rest Framework
