@@ -9,5 +9,5 @@ setup(
     author='Anthony Batchelor',
     author_email='tony@ynottony.net',
     url='https://ten.ynottony.net/',
-    packages=['chat', 'users'],
+    packages=['chat', 'users', 'wall'],
 )
