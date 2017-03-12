@@ -10,6 +10,8 @@ def send_welcome_email(user):
     # HTML + plain text emails. But for simplicity, plain text emails
     # will do.
     # http://foundation.zurb.com/
+    if user.email is None:
+        return None
 
     message = """Hi {username},
 
