@@ -58,3 +58,12 @@ class UserReadOnlySerializerTest(TestCase):
         self.assertIsNone(test_user)
         user.refresh_from_db()
         self.assertNotEqual(user.username, data["username"])
+
+    def test_get_avatar(self):
+        user = UserFactory(email="test@example.com")
+        serializer = UserReadOnlySerializer(user)
+
+        self.assertEqual(
+            serializer.get_avatar(user),
+            "https://www.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?d=mm"
+        )

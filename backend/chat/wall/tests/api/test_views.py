@@ -6,6 +6,7 @@ from rest_framework.test import (
     force_authenticate,
 )
 
+from users.api.serializers import UserReadOnlySerializer
 from users.factories import UserFactory
 from wall.api.views import MessageListCreateAPIView
 from wall.factories import MessageFactory
@@ -29,9 +30,13 @@ class RegisterMessageTest(APITestCase):
         response = MessageListCreateAPIView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
+        user_serializer = UserReadOnlySerializer(message.user)
         test_data = [{
             "message": message.message,
-            "user": {"username": message.user.username},
+            "user": {
+                "username": message.user.username,
+                "avatar": user_serializer.get_avatar(message.user),
+            },
             "timestamp": message.timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         }]
         self.assertEqual(response.data, test_data)
@@ -66,9 +71,13 @@ class RegisterMessageTest(APITestCase):
         response = MessageListCreateAPIView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
+        user_serializer = UserReadOnlySerializer(message.user)
         test_data = [{
             "message": message.message,
-            "user": {"username": message.user.username},
+            "user": {
+                "username": message.user.username,
+                "avatar": user_serializer.get_avatar(message.user),
+            },
             "timestamp": message.timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         }]
         self.assertEqual(response.data, test_data)
