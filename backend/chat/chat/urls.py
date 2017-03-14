@@ -20,4 +20,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/users/', include("users.api.urls")),
+    url(r'^api/wall/', include("wall.api.urls")),
 ]

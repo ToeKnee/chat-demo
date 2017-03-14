@@ -16,7 +16,11 @@ class Message(models.Model):
         on_delete=models.CASCADE
     )
     message = models.TextField(_("Message"))
-    timestamp = models.DateTimeField(_("Timestamp"), default=timezone.now)
+    timestamp = models.DateTimeField(
+        _("Timestamp"),
+        default=timezone.now,
+        editable=False
+    )
 
     def __str__(self):
         return self.message

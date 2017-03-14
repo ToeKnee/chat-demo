@@ -29,3 +29,32 @@ email will be sent to the user.
 
 Returns the token for a user. This token should be supplied with
 subsequent requests to authenticate the user.
+
+
+## Chat Wall
+
+### Read chat wall messages
+
+    GET: /api/wall/
+
+Returns a list of messages.
+
+    [
+        {
+            "message": "A test message",
+            "user": {
+                "username": "TestUser"
+            },
+            "timestamp": "2017-03-12T20:15:58Z"
+        },
+    }
+
+### Create chat wall message
+
+    POST: /api/wall/
+    Fields: message*
+    * required fields
+    `Authentication` required
+
+Users must be authenticated to post to the wall. Returns the created
+message.
