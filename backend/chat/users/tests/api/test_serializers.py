@@ -6,6 +6,7 @@ from django.test import TestCase
 from users.api.serializers import UserSerializer, UserReadOnlySerializer
 from users.factories import UserFactory
 
+
 class UserSerializerTest(TestCase):
     def test_read_fields(self):
         user = UserFactory.build()

@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import hashlib
+
 from rest_framework.test import (
     APIRequestFactory,
     APITestCase,
@@ -12,7 +14,7 @@ from wall.api.views import MessageListCreateAPIView
 from wall.factories import MessageFactory
 
 
-class RegisterMessageTest(APITestCase):
+class MessageListCreateTest(APITestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
 
@@ -32,6 +34,7 @@ class RegisterMessageTest(APITestCase):
 
         user_serializer = UserReadOnlySerializer(message.user)
         test_data = [{
+            "key": hashlib.md5(str(message.id).encode("utf-8")).hexdigest(),
             "message": message.message,
             "user": {
                 "username": message.user.username,
@@ -73,6 +76,7 @@ class RegisterMessageTest(APITestCase):
 
         user_serializer = UserReadOnlySerializer(message.user)
         test_data = [{
+            "key": hashlib.md5(str(message.id).encode("utf-8")).hexdigest(),
             "message": message.message,
             "user": {
                 "username": message.user.username,
@@ -91,4 +95,4 @@ class RegisterMessageTest(APITestCase):
 
         response = MessageListCreateAPIView.as_view()(request, data)
         self.assertEqual(response.status_code, 201, response.data)
-        self.assertEqual(response.data, data)
+        self.assertEqual(response.data["message"], data["message"])
