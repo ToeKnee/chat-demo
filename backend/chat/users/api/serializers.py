@@ -31,6 +31,7 @@ class UserReadOnlySerializer(serializers.ModelSerializer):
         return None
 
     def get_avatar(self, obj):
+        """ Return the URL of the gravatar avatar """
         hashed_email = hashlib.md5(obj.email.encode("utf-8")).hexdigest()
         url = "https://www.gravatar.com/avatar/{hashed_email}?d=mm"
         return url.format(hashed_email=hashed_email)
