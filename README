@@ -28,3 +28,40 @@ The test suite is set up using tox.
 * Python 3
 * Django 1.10
 * Django Rest Framework
+
+
+
+## Frontend
+
+## Running tests
+
+    npm test
+
+## Running the dev server
+
+To simplify development, the dev server proxies the Django dev servers
+default host and port (http://127.0.0.1:8000). If you are running the
+Django server on another machine or in a different configuration you
+will need to change the "proxy" setting in `package.json` to proxy
+your backend server.
+
+In production, you can set the environment variable
+`REACT_APP_BACKEND` to the location of the backend. Please note, you
+will have to set the `Access-Control-Allow-Origin` header to allow the
+front end to access the API.
+
+### Bootstrap the server
+
+    cd frontend/chat/
+    npm install
+
+### Run the server
+
+    npm start
+
+
+### Main Technologies
+
+* ES6
+* React (via create-react-app)
+* Sass

@@ -4,15 +4,20 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "moment": "^2.17.1",
+    "promise-polyfill": "^6.0.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.8",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "fetch-mock": "^5.9.4",
     "node-sass": "^4.5.0",
     "npm-run-all": "^4.0.2",
     "react-scripts": "0.9.5"
   },
+  "proxy": "http://localhost:8000",
   "scripts": {
     "build-css": "node-sass src/ -o src/",
     "watch-css": "npm run build-css && node-sass src/ -o src/ --watch --recursive",
