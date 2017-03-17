@@ -35,6 +35,7 @@ class App extends Component {
     this.checkStatus = this.checkStatus.bind(this);
     this.doLogin = this.doLogin.bind(this);
     this.doLogout = this.doLogout.bind(this);
+    this.doRegistration = this.doRegistration.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleRegisterClick = this.handleRegisterClick.bind(this);
   };
@@ -83,8 +84,33 @@ class App extends Component {
     }
   };
 
-  doLogin(e) {
+  doRegistration(e) {
     e.preventDefault();
+    var form = document.querySelector('form');
+    fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/", {
+      method: 'POST',
+      body: new FormData(form)
+    })
+    .then(this.checkStatus)
+    .then(response => response.json())
+    .then(json => {
+      if (this.state.hasErrors) {
+        this.setState({errors: json});
+      } else {
+        this.doLogin();
+      }
+
+    }).catch(function(ex) {
+      // Display this well
+      console.log('parsing failed', ex)
+    });
+  };
+
+  doLogin(e) {
+    // This can be called by doRegistration or by an onClick event.
+    if (typeof e !== "undefined") {
+      e.preventDefault();
+    }
     // Get the log-in token
     var form = document.querySelector('form');
     fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/token/", {
@@ -125,11 +151,11 @@ class App extends Component {
         break;
       }
       case "registration": {
-        body =  <Registration doLogin={this.doLogin}/>;
+        body =  <Registration doRegistration={this.doRegistration} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
         break;
       }
     case "login": {
-        body =  <Login doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors}/>;
+        body =  <Login doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
         break;
       }
       default: {
