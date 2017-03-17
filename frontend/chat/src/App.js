@@ -29,6 +29,7 @@ class App extends Component {
     // Bind this to onClick handlers
     this.handleRegisterClick = this.handleRegisterClick.bind(this);
     this.doLogin = this.doLogin.bind(this);
+    this.doLogout = this.doLogout.bind(this);
   };
 
   loadMessages() {
@@ -77,8 +78,15 @@ class App extends Component {
       // Display this well
       console.log('parsing failed', ex)
     });
-  }
+  };
 
+  doLogout() {
+    localStorage.removeItem("token");
+    this.setState({
+      token: undefined,
+      display: "wall"
+    });
+  };
 
   render() {
     let body = null;
@@ -108,7 +116,7 @@ class App extends Component {
                 </button> &nbsp;
                 <button className="btn btn-primary">Login</button>
                 </div>
-            ) : (<button className="btn btn-default btn-sm">Logout</button>)
+            ) : (<button className="btn btn-default btn-sm"  onClick={this.doLogout}>Logout</button>)
             }
           </div>
           <h2>Welcome to Chat Wall</h2>
