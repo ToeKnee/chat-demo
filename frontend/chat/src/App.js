@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Login from './Login';
 import Registration from './Registration';
 import Wall from './Wall';
 
@@ -22,27 +23,35 @@ class App extends Component {
       // Log-in Token
       token: localStorage.token,
 
+      // Store error state
+      hasErrors: false,
+      errors: {},
+
       // Which screen are we showing?
       display: "wall"
     };
 
     // Bind this to onClick handlers
-    this.handleRegisterClick = this.handleRegisterClick.bind(this);
+    this.checkStatus = this.checkStatus.bind(this);
     this.doLogin = this.doLogin.bind(this);
     this.doLogout = this.doLogout.bind(this);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleRegisterClick = this.handleRegisterClick.bind(this);
   };
 
   loadMessages() {
-    fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/")
-    .then(response => response.json())
-    .then(json => {
-      this.setState({
-        messages: json,
+    if (this.state.display === "wall") {
+      fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/")
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          messages: json,
+        });
+      }).catch(function(ex) {
+        // Display this well
+        console.log('parsing failed', ex)
       });
-    }).catch(function(ex) {
-      // Display this well
-      console.log('parsing failed', ex)
-    });
+    }
   };
 
   componentDidMount() {
@@ -59,7 +68,23 @@ class App extends Component {
     this.setState({display: "registration"});
   };
 
-  doLogin() {
+  handleLoginClick(e) {
+    e.preventDefault();
+    this.setState({display: "login"});
+  };
+
+  checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      this.setState({hasErrors: false});
+      return response;
+    } else {
+      this.setState({hasErrors: true});
+      return response;
+    }
+  };
+
+  doLogin(e) {
+    e.preventDefault();
     // Get the log-in token
     var form = document.querySelector('form');
     fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/token/", {
@@ -69,11 +94,15 @@ class App extends Component {
     .then(this.checkStatus)
     .then(response => response.json())
     .then(json => {
-      localStorage.token = json.token;
-      this.setState({
-        token: json.token,
-        display: "wall"
-      });
+      if (this.state.hasErrors) {
+        this.setState({errors: json});
+      } else if (typeof json.token !== "undefined") {
+        localStorage.token = json.token;
+        this.setState({
+          token: json.token,
+          display: "wall"
+        });
+      }
     }).catch(function(ex) {
       // Display this well
       console.log('parsing failed', ex)
@@ -99,6 +128,10 @@ class App extends Component {
         body =  <Registration doLogin={this.doLogin}/>;
         break;
       }
+    case "login": {
+        body =  <Login doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors}/>;
+        break;
+      }
       default: {
         body = <Wall messages={this.state.messages} />;
         break;
@@ -114,7 +147,7 @@ class App extends Component {
                 <button className="btn btn-default" onClick={this.handleRegisterClick}>
                   Create Account
                 </button> &nbsp;
-                <button className="btn btn-primary">Login</button>
+                <button className="btn btn-primary" onClick={this.handleLoginClick}>Log in</button>
                 </div>
             ) : (<button className="btn btn-default btn-sm"  onClick={this.doLogout}>Logout</button>)
             }
