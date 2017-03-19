@@ -33,6 +33,7 @@ class App extends Component {
 
     // Bind this to onClick handlers
     this.checkStatus = this.checkStatus.bind(this);
+    this.createMessage = this.createMessage.bind(this);
     this.doLogin = this.doLogin.bind(this);
     this.doLogout = this.doLogout.bind(this);
     this.doRegistration = this.doRegistration.bind(this);
@@ -46,7 +47,7 @@ class App extends Component {
       .then(response => response.json())
       .then(json => {
         this.setState({
-          messages: json,
+          messages: json
         });
       }).catch(function(ex) {
         // Display this well
@@ -143,25 +144,55 @@ class App extends Component {
     });
   };
 
+  createMessage(e) {
+    e.preventDefault();
+
+    var form = document.querySelector('form');
+    fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/", {
+      method: 'POST',
+      headers: {
+        'Authorization': "Token " + this.state.token,
+        'HTTP_Authorization': "Token " + this.state.token,
+        'origin': "Token " + this.state.token
+      },
+      body: new FormData(form)
+    })
+    .then(this.checkStatus)
+    .then(response => response.json())
+    .then(json => {
+      if (this.state.hasErrors) {
+        this.setState({errors: json});
+      } else {
+        // Load the message list
+        this.loadMessages();
+      }
+    }).catch(function(ex) {
+      // Display this well
+      console.log('parsing failed', ex)
+    });
+  };
+
   render() {
     let body = null;
+    let loggedIn = typeof this.state.token !== "undefined";
+
     switch (this.state.display) {
     case "wall": {
-        body = <Wall messages={this.state.messages} />;
-        break;
-      }
-      case "registration": {
-        body =  <Registration doRegistration={this.doRegistration} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
-        break;
-      }
+      body = <Wall messages={this.state.messages} loggedIn={loggedIn} createMessage={this.createMessage}  doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+      break;
+    }
+    case "registration": {
+      body =  <Registration doRegistration={this.doRegistration} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+      break;
+    }
     case "login": {
-        body =  <Login doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
-        break;
-      }
-      default: {
-        body = <Wall messages={this.state.messages} />;
-        break;
-      }
+      body =  <Login doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+      break;
+    }
+    default: {
+      body = <Wall messages={this.state.messages} loggedIn={loggedIn} createMessage={this.createMessage}  doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+      break;
+    }
     };
 
     return (
