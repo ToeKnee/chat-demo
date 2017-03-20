@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import Warning from './Warning';
+import Warning from '../Warning';
 
-class Login extends Component {
+class Registration extends Component {
   render() {
     return (
       <form className="well">
 
-      <h2>Login</h2>
-
-      {(this.props.hasErrors && this.props.errors.non_field_errors) ? (<Warning warning={this.props.errors.non_field_errors} />) : ""}
+      <h2>Create Account</h2>
 
       <div className="form-group">
       <label htmlFor="username">Username*</label>
@@ -17,13 +15,19 @@ class Login extends Component {
       </div>
 
       <div className="form-group">
+      <label htmlFor="email">Email</label>
+      <input type="email" name="email" className="form-control" />
+        {(this.props.hasErrors && this.props.errors.email) ? (<Warning warning={this.props.errors.email} />) : ""}
+      </div>
+
+      <div className="form-group">
       <label htmlFor="password">Password*</label>
       <input type="password" name="password" className="form-control" />
         {(this.props.hasErrors && this.props.errors.password) ? (<Warning warning={this.props.errors.password} />) : ""}
       </div>
 
-      <button className="btn btn-primary" onClick={ this.props.doLogin }>
-        Log in
+      <button className="btn btn-primary" onClick={ this.props.doRegistration }>
+        Sign up
       </button>
 
       </form>
@@ -31,4 +35,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default Registration;

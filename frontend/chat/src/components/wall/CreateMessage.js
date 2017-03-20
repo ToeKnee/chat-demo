@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Warning from './Warning';
+import Warning from '../Warning';
 
 
 class CreateMessage extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CreateMessage from './CreateMessage';
-import Login from './Login';
+import Login from '../users/Login';
 import Message from './Message';
 
 
