@@ -8,6 +8,8 @@ class Registration extends Component {
 
       <h2>Create Account</h2>
 
+      {(this.props.hasErrors && this.props.errors.non_field_errors) ? (<Warning warning={this.props.errors.non_field_errors} />) : ""}
+
       <div className="form-group">
       <label htmlFor="username">Username*</label>
       <input type="text" name="username" className="form-control" />
