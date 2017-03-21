@@ -3,6 +3,7 @@ import './App.css';
 import Login from './users/Login';
 import Registration from './users/Registration';
 import Wall from './wall/Wall';
+import Warning from './Warning';
 
 class App extends Component {
   constructor(props) {
@@ -37,22 +38,38 @@ class App extends Component {
     this.doLogin = this.doLogin.bind(this);
     this.doLogout = this.doLogout.bind(this);
     this.doRegistration = this.doRegistration.bind(this);
+    this.handleError = this.handleError.bind(this);
     this.handleLoginClick = this.handleLoginClick.bind(this);
     this.handleRegisterClick = this.handleRegisterClick.bind(this);
   };
 
+  handleError(exception) {
+    // Log the exception in some way.
+    //
+    // Maybe save it in local storage and sync it back to the server
+    // when possible.
+
+    // Display a friendly error message
+    this.setState({
+      hasErrors: true,
+      errors: {
+        "global": "Uh-oh. Something went wrong. Please check " +
+        "your internet connection. If the problem still persists, " +
+        "please contact us."
+      }
+    });
+  }
+
   loadMessages() {
     if (this.state.display === "wall") {
       fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/")
+      .then(this.checkStatus)
       .then(response => response.json())
       .then(json => {
         this.setState({
           messages: json
         });
-      }).catch(function(ex) {
-        // Display this well
-        console.log('parsing failed', ex)
-      });
+      }).catch(this.handleError);
     }
   };
 
@@ -77,7 +94,10 @@ class App extends Component {
 
   checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
-      this.setState({hasErrors: false});
+      this.setState({
+        hasErrors: false,
+        errors: {}
+      });
       return response;
     } else {
       this.setState({hasErrors: true});
@@ -100,11 +120,7 @@ class App extends Component {
       } else {
         this.doLogin();
       }
-
-    }).catch(function(ex) {
-      // Display this well
-      console.log('parsing failed', ex)
-    });
+    }).catch(this.handleError);
   };
 
   doLogin(e) {
@@ -130,10 +146,7 @@ class App extends Component {
           display: "wall"
         });
       }
-    }).catch(function(ex) {
-      // Display this well
-      console.log('parsing failed', ex)
-    });
+    }).catch(this.handleError);
   };
 
   doLogout() {
@@ -166,10 +179,7 @@ class App extends Component {
         // Load the message list
         this.loadMessages();
       }
-    }).catch(function(ex) {
-      // Display this well
-      console.log('parsing failed', ex)
-    });
+    }).catch(this.handleError);
   };
 
   render() {
@@ -212,6 +222,7 @@ class App extends Component {
           <h2>Welcome to Chat Wall</h2>
         </div>
         <div className="container">
+          {(this.state.hasErrors && this.state.errors.global) ? (<Warning warning={this.state.errors.global} />) : ""}
           {body}
         </div>
       </div>
