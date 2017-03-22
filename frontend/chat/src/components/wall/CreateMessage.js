@@ -25,9 +25,9 @@ class CreateMessage extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={(event) => this.handleSubmit(event)}>
         <div className="form-group">
-          <textarea name="message" className="form-control" rows="3" value={this.state.message_text}  onChange={this.handleChange} />
+          <textarea name="message" className="form-control" rows="3" value={this.state.message_text}  onChange={(event) => this.handleChange(event)} />
           {(this.props.hasErrors && this.props.errors.message) ? (<Warning warning={this.props.errors.message} />) : ""}
           {(this.props.hasErrors && this.props.errors.detail) ? (<Warning warning={this.props.errors.detail} />) : ""}
         </div>
