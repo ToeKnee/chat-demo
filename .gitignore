@@ -1,0 +1,6 @@
+*.pyc
+*~
+.tox
+MANIFEST
+db.sqlite3
+env

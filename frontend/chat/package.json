@@ -1,0 +1,34 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "moment": "^2.17.1",
+    "promise-polyfill": "^6.0.2",
+    "react": "^15.4.2",
+    "react-bootstrap": "^0.30.8",
+    "react-dom": "^15.4.2",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "devDependencies": {
+    "enzyme": "^2.7.1",
+    "fetch-mock": "^5.9.4",
+    "jest-enzyme": "^2.1.2",
+    "node-sass": "^4.5.0",
+    "npm-run-all": "^4.0.2",
+    "react-addons-test-utils": "^15.4.2",
+    "react-scripts": "0.9.5",
+    "sinon": "^2.1.0"
+  },
+  "proxy": "http://localhost:8000",
+  "scripts": {
+    "build-css": "node-sass src/ -o src/",
+    "watch-css": "npm run build-css && node-sass src/ -o src/ --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
