@@ -62,7 +62,7 @@ class App extends Component {
 
   loadMessages() {
     if (this.state.display === "wall") {
-      return fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/")
+      return fetch((process.env.REACT_APP_SERVER || "") + "/api/wall/")
       .then(this.checkStatus)
       .then(response => response.json())
       .then(json => {
@@ -111,7 +111,7 @@ class App extends Component {
   doRegistration(e) {
     e.preventDefault();
     var form = document.querySelector('form');
-    return fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/", {
+    return fetch((process.env.REACT_APP_SERVER || "") + "/api/users/", {
       method: 'POST',
       body: new FormData(form)
     })
@@ -133,7 +133,7 @@ class App extends Component {
     }
     // Get the log-in token
     var form = document.querySelector('form');
-    return fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/token/", {
+    return fetch((process.env.REACT_APP_SERVER || "") + "/api/users/token/", {
       method: 'POST',
       body: new FormData(form)
     })
@@ -166,7 +166,7 @@ class App extends Component {
 
   createMessage(e, message_text) {
     e.preventDefault();
-    return fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/", {
+    return fetch((process.env.REACT_APP_SERVER || "") + "/api/wall/", {
       method: 'POST',
       headers: {
         'Authorization': "Token " + this.state.token,

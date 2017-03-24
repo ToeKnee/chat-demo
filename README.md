@@ -1,6 +1,6 @@
 # Simple Chat app
 
-## Back-end
+## Api Server
 
 Full API documentation can be found in docs/API.md
 
@@ -8,7 +8,7 @@ Full API documentation can be found in docs/API.md
 
 ### Bootstrap the server
 
-    cd backend/chat/
+    cd server/chat/
     virtualenv env -p python3
     source env/bin/activate
     pip install -r requirements.txt
@@ -44,7 +44,7 @@ dependencies to get a heads up when things will break.
 
 
 
-## Front-end
+## Web Client
 
 As one of my first non-tutorial React apps, I learned a lot developing
 this page and there are a few things I would change if I was doing it again.
@@ -79,16 +79,16 @@ To simplify development, the dev server proxies the Django dev servers
 default host and port (http://127.0.0.1:8000). If you are running the
 Django server on another machine or in a different configuration you
 will need to change the "proxy" setting in `package.json` to proxy
-your back-end server.
+your API server.
 
 In production, you can set the environment variable
-`REACT_APP_BACKEND` to the location of the back-end. Please note, you
+`REACT_APP_SERVER` to the location of the server. Please note, you
 will have to set the `Access-Control-Allow-Origin` header to allow the
-front end to access the API.
+web client to access the API.
 
 ### Bootstrap the server
 
-    cd frontend/chat/
+    cd web-client/chat/
     npm install
 
 ### Run the server
