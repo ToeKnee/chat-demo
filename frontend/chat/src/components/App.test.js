@@ -36,6 +36,28 @@ describe('App loadMessages suite', () => {
     fetchMock.restore();
   });
 
+  it('does not set messages if array is empty', async () => {
+    const test_messages = [];
+    fetchMock.get("/api/wall/", {
+      status: 200,
+      body: JSON.stringify(test_messages)
+    });
+
+    const wrapper = shallow(<App />);
+
+    await wrapper.instance().loadMessages();
+
+    expect(wrapper.state().messages).toMatchObject([{
+      "key": 1,
+      "message": "It's a bit quiet in here...",
+      "user": {
+        "username": "Chat Wall",
+        "avatar": "https://www.gravatar.com/avatar/40d9c9117dd26facbe8967fc0e516easd?d=mm"
+      },
+      "timestamp": "2017-03-15T19:02:24.401542Z"
+    }]);
+  });
+
   it('sets messages to the correct value', async () => {
     const test_messages = [
       {

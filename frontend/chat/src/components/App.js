@@ -66,9 +66,11 @@ class App extends Component {
       .then(this.checkStatus)
       .then(response => response.json())
       .then(json => {
-        this.setState({
-          messages: json
-        });
+        if (json.length > 0) {
+          this.setState({
+            messages: json
+          });
+        }
       }).catch(this.handleError);
     }
   };
