@@ -12,6 +12,7 @@ Full API documentation can be found in docs/API.md
     virtualenv env -p python3
     source env/bin/activate
     pip install -r requirements.txt
+    ./manage.py migrate
 
 ### Run the server
 
@@ -72,10 +73,6 @@ I have had a quick look at optimising the rendering, (either through
 `shouldUpdate` or pure components), but feel that an app of this scope
 is small enough that I would be optimising prematurely.
 
-## Running tests
-
-    npm test
-
 ## Running the dev server
 
 To simplify development, the dev server proxies the Django dev servers
@@ -98,6 +95,9 @@ front end to access the API.
 
     npm start
 
+### Running tests
+
+    npm test
 
 ### Main Technologies
 
