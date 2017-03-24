@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='Chat',
-    version='0.1',
+    version='1.0.0',
     description='Simple Chat Wall',
     author='Anthony Batchelor',
     author_email='tony@ynottony.net',
