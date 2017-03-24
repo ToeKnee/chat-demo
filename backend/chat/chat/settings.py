@@ -130,6 +130,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+PER_PAGE = 20
+
 if DEBUG:
     # Use the console backend when in debug mode
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

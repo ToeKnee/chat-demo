@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import hashlib
 
+from django.test import override_settings
 from rest_framework.test import (
     APIRequestFactory,
     APITestCase,
@@ -50,7 +51,7 @@ class MessageListCreateTest(APITestCase):
         request = self.factory.post('/api/wall/', data)
 
         response = MessageListCreateAPIView.as_view()(request, data)
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response.data,
             {'detail': 'Authentication credentials were not provided.'}
@@ -96,3 +97,18 @@ class MessageListCreateTest(APITestCase):
         response = MessageListCreateAPIView.as_view()(request, data)
         self.assertEqual(response.status_code, 201, response.data)
         self.assertEqual(response.data["message"], data["message"])
+
+    @override_settings(PER_PAGE=2)
+    def test_get_queryset__limited_to_PER_PAGE(self):
+        oldest_message = MessageFactory()
+        middle_message = MessageFactory()
+        newest_message = MessageFactory()
+
+        queryset = MessageListCreateAPIView().get_queryset()
+        self.assertNotIn(oldest_message, queryset)
+        self.assertIn(middle_message, queryset)
+        self.assertIn(newest_message, queryset)
+        self.assertEqual(
+            [middle_message, newest_message],
+            list(queryset)
+        )

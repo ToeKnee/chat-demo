@@ -19,7 +19,8 @@ class Message(models.Model):
     timestamp = models.DateTimeField(
         _("Timestamp"),
         default=timezone.now,
-        editable=False
+        editable=False,
+        db_index=True
     )
 
     def __str__(self):
