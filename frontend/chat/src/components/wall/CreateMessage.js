@@ -19,7 +19,7 @@ class CreateMessage extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.createMessage(event);
+    this.props.createMessage(event, this.state.message_text);
     this.setState({"message_text": ""});
   }
 

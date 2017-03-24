@@ -8,7 +8,7 @@ import Warning from './Warning';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.timer = null;
+    this.timer = undefined;
     this.state = {
       messages: [
         {
@@ -53,7 +53,7 @@ class App extends Component {
     this.setState({
       hasErrors: true,
       errors: {
-        "global": "Uh-oh. Something went wrong. Please check " +
+        global: "Uh-oh. Something went wrong. Please check " +
         "your internet connection. If the problem still persists, " +
         "please contact us."
       }
@@ -62,7 +62,7 @@ class App extends Component {
 
   loadMessages() {
     if (this.state.display === "wall") {
-      fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/")
+      return fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/")
       .then(this.checkStatus)
       .then(response => response.json())
       .then(json => {
@@ -75,11 +75,12 @@ class App extends Component {
 
   componentDidMount() {
     this.loadMessages();
-    this.timer = setInterval(function() {this.loadMessages();}.bind(this), 5000)
+    this.timer = setInterval(function() {this.loadMessages();}.bind(this), 5000);
   };
 
   componentWillUnmount() {
     clearInterval(this.timer);
+    this.timer = undefined;
   };
 
   handleRegisterClick(e) {
@@ -108,7 +109,7 @@ class App extends Component {
   doRegistration(e) {
     e.preventDefault();
     var form = document.querySelector('form');
-    fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/", {
+    return fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/", {
       method: 'POST',
       body: new FormData(form)
     })
@@ -130,7 +131,7 @@ class App extends Component {
     }
     // Get the log-in token
     var form = document.querySelector('form');
-    fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/token/", {
+    return fetch((process.env.REACT_APP_BACKEND || "") + "/api/users/token/", {
       method: 'POST',
       body: new FormData(form)
     })
@@ -138,7 +139,11 @@ class App extends Component {
     .then(response => response.json())
     .then(json => {
       if (this.state.hasErrors) {
-        this.setState({errors: json});
+        this.setState({
+          errors: json,
+          token: undefined
+        });
+        localStorage.token = undefined;
       } else if (typeof json.token !== "undefined") {
         localStorage.token = json.token;
         this.setState({
@@ -157,18 +162,19 @@ class App extends Component {
     });
   };
 
-  createMessage(e) {
+  createMessage(e, message_text) {
     e.preventDefault();
-
-    var form = document.querySelector('form');
-    fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/", {
+    return fetch((process.env.REACT_APP_BACKEND || "") + "/api/wall/", {
       method: 'POST',
       headers: {
         'Authorization': "Token " + this.state.token,
         'HTTP_Authorization': "Token " + this.state.token,
-        'origin': "Token " + this.state.token
+        'origin': "Token " + this.state.token,
+        'content-type': "application/json"
       },
-      body: new FormData(form)
+      body: JSON.stringify({
+        "message": message_text
+      })
     })
     .then(this.checkStatus)
     .then(response => response.json())
@@ -182,27 +188,30 @@ class App extends Component {
     }).catch(this.handleError);
   };
 
+  loggedIn() {
+    return typeof this.state.token !== "undefined";
+  };
+
   render() {
     let body = null;
-    let loggedIn = typeof this.state.token !== "undefined";
 
     switch (this.state.display) {
-    case "wall": {
-      body = <Wall messages={this.state.messages} loggedIn={loggedIn} createMessage={this.createMessage}  doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
-      break;
-    }
-    case "registration": {
-      body =  <Registration doRegistration={this.doRegistration} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
-      break;
-    }
-    case "login": {
-      body =  <Login doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
-      break;
-    }
-    default: {
-      body = <Wall messages={this.state.messages} loggedIn={loggedIn} createMessage={this.createMessage}  doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
-      break;
-    }
+      case "wall": {
+        body = <Wall messages={this.state.messages} loggedIn={this.loggedIn()} createMessage={this.createMessage} doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+        break;
+      }
+      case "registration": {
+        body = <Registration doRegistration={this.doRegistration} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+        break;
+      }
+      case "login": {
+        body = <Login doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+        break;
+      }
+      default: {
+        body = <Wall messages={this.state.messages} loggedIn={this.loggedIn()} createMessage={this.createMessage} doLogin={this.doLogin} hasErrors={this.state.hasErrors} errors={this.state.errors} />;
+        break;
+      }
     };
 
     return (
