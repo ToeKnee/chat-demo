@@ -30,7 +30,7 @@ Run all environments
 
 or just one
 
-   tox -e py27
+    tox -e py27
 
 Note: I would usually set up tox to test all supported environments
 (and versions of Django) and a "canary" build that tests unpinned
