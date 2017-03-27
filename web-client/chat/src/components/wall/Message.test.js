@@ -19,16 +19,16 @@ describe('Message suite', function() {
   });
 
   it('renders the avatar', () => {
-    expect(shallow(<Message avatar="http://example.com/image.jpg" />).contains(<img className="media-object img-rounded" src="http://example.com/image.jpg" alt="avatar" />)).toBe(true);
+    expect(shallow(<Message message="I am a message." avatar="http://example.com/image.jpg" />).contains(<img className="media-object img-rounded" src="http://example.com/image.jpg" alt="avatar" />)).toBe(true);
   });
 
   it('renders the time', () => {
     const date = Date.now();
-    expect(shallow(<Message time={date} />).contains("a few seconds ago")).toBe(true);
+    expect(shallow(<Message message="I am a message." time={date} />).contains("a few seconds ago")).toBe(true);
   });
 
   it('renders the message', () => {
-    expect(shallow(<Message message="I am a message." />).contains(<p>I am a message.</p>)).toBe(true);
+    expect(shallow(<Message message="I am a message." />).html()).toContain("<p>I am a message.</p>");
   });
 
 });
