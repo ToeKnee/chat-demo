@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 
 class Message extends Component {
@@ -14,9 +15,7 @@ class Message extends Component {
             {this.props.user}
           </h4>
 
-          <p>
-            {this.props.message}
-          </p>
+          <ReactMarkdown source={this.props.message} escapeHtml={true} />
 
         </div>
       </div>
