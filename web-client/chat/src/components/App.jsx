@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import './App.css';
-import Login from './users/Login';
-import Registration from './users/Registration';
-import Wall from './wall/Wall';
-import Warning from './Warning';
+import React, { Component } from "react";
+import "./App.css";
+import Login from "./users/Login";
+import Registration from "./users/Registration";
+import Wall from "./wall/Wall";
+import Warning from "./Warning";
 
 class App extends Component {
   constructor(props) {
@@ -15,11 +15,11 @@ class App extends Component {
           key: 1,
           message: "It's a bit quiet in here...",
           user: {
-            username: 'Chat Wall',
+            username: "Chat Wall",
             avatar:
-              'https://www.gravatar.com/avatar/40d9c9117dd26facbe8967fc0e516easd?d=mm'
+              "https://www.gravatar.com/avatar/40d9c9117dd26facbe8967fc0e516easd?d=mm"
           },
-          timestamp: '2017-03-15T19:02:24.401542Z'
+          timestamp: "2017-03-15T19:02:24.401542Z"
         }
       ],
       // Log-in Token
@@ -30,7 +30,7 @@ class App extends Component {
       errors: {},
 
       // Which screen are we showing?
-      display: 'wall'
+      display: "wall"
     };
 
     // Bind this to onClick handlers
@@ -55,16 +55,16 @@ class App extends Component {
       hasErrors: true,
       errors: {
         global:
-          'Uh-oh. Something went wrong. Please check ' +
-          'your internet connection. If the problem still persists, ' +
-          'please contact us.'
+          "Uh-oh. Something went wrong. Please check " +
+          "your internet connection. If the problem still persists, " +
+          "please contact us."
       }
     });
   }
 
   loadMessages() {
-    if (this.state.display === 'wall') {
-      return fetch((process.env.REACT_APP_SERVER || '') + '/api/wall/')
+    if (this.state.display === "wall") {
+      return fetch((process.env.REACT_APP_SERVER || "") + "/api/wall/")
         .then(this.checkStatus)
         .then(response => response.json())
         .then(json => {
@@ -95,12 +95,12 @@ class App extends Component {
 
   handleRegisterClick(e) {
     e.preventDefault();
-    this.setState({ display: 'registration' });
+    this.setState({ display: "registration" });
   }
 
   handleLoginClick(e) {
     e.preventDefault();
-    this.setState({ display: 'login' });
+    this.setState({ display: "login" });
   }
 
   checkStatus(response) {
@@ -118,9 +118,9 @@ class App extends Component {
 
   doRegistration(e) {
     e.preventDefault();
-    var form = document.querySelector('form');
-    return fetch((process.env.REACT_APP_SERVER || '') + '/api/users/', {
-      method: 'POST',
+    var form = document.querySelector("form");
+    return fetch((process.env.REACT_APP_SERVER || "") + "/api/users/", {
+      method: "POST",
       body: new FormData(form)
     })
       .then(this.checkStatus)
@@ -137,13 +137,13 @@ class App extends Component {
 
   doLogin(e) {
     // This can be called by doRegistration or by an onClick event.
-    if (typeof e !== 'undefined') {
+    if (typeof e !== "undefined") {
       e.preventDefault();
     }
     // Get the log-in token
-    var form = document.querySelector('form');
-    return fetch((process.env.REACT_APP_SERVER || '') + '/api/users/token/', {
-      method: 'POST',
+    var form = document.querySelector("form");
+    return fetch((process.env.REACT_APP_SERVER || "") + "/api/users/token/", {
+      method: "POST",
       body: new FormData(form)
     })
       .then(this.checkStatus)
@@ -155,11 +155,11 @@ class App extends Component {
             token: undefined
           });
           localStorage.token = undefined;
-        } else if (typeof json.token !== 'undefined') {
+        } else if (typeof json.token !== "undefined") {
           localStorage.token = json.token;
           this.setState({
             token: json.token,
-            display: 'wall'
+            display: "wall"
           });
         }
       })
@@ -167,22 +167,22 @@ class App extends Component {
   }
 
   doLogout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     this.setState({
       token: undefined,
-      display: 'wall'
+      display: "wall"
     });
   }
 
   createMessage(e, message_text) {
     e.preventDefault();
-    return fetch((process.env.REACT_APP_SERVER || '') + '/api/wall/', {
-      method: 'POST',
+    return fetch((process.env.REACT_APP_SERVER || "") + "/api/wall/", {
+      method: "POST",
       headers: {
-        Authorization: 'Token ' + this.state.token,
-        HTTP_Authorization: 'Token ' + this.state.token,
-        origin: 'Token ' + this.state.token,
-        'content-type': 'application/json'
+        Authorization: "Token " + this.state.token,
+        HTTP_Authorization: "Token " + this.state.token,
+        origin: "Token " + this.state.token,
+        "content-type": "application/json"
       },
       body: JSON.stringify({
         message: message_text
@@ -202,14 +202,14 @@ class App extends Component {
   }
 
   loggedIn() {
-    return typeof this.state.token !== 'undefined';
+    return typeof this.state.token !== "undefined";
   }
 
   render() {
     let body = null;
 
     switch (this.state.display) {
-      case 'wall': {
+      case "wall": {
         body = (
           <Wall
             messages={this.state.messages}
@@ -222,7 +222,7 @@ class App extends Component {
         );
         break;
       }
-      case 'registration': {
+      case "registration": {
         body = (
           <Registration
             doRegistration={this.doRegistration}
@@ -232,7 +232,7 @@ class App extends Component {
         );
         break;
       }
-      case 'login': {
+      case "login": {
         body = (
           <Login
             doLogin={this.doLogin}
@@ -261,14 +261,14 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <div className="pull-right">
-            {typeof this.state.token === 'undefined' ? (
+            {typeof this.state.token === "undefined" ? (
               <div>
                 <button
                   className="btn btn-default"
                   onClick={this.handleRegisterClick}
                 >
                   Create Account
-                </button>{' '}
+                </button>{" "}
                 &nbsp;
                 <button
                   className="btn btn-primary"
@@ -292,7 +292,7 @@ class App extends Component {
           {this.state.hasErrors && this.state.errors.global ? (
             <Warning warning={this.state.errors.global} />
           ) : (
-            ''
+            ""
           )}
           {body}
         </div>

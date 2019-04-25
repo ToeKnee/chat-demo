@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import ReactMarkdown from 'react-markdown';
-import moment from 'moment';
+import React, { Component } from "react";
+import ReactMarkdown from "react-markdown";
+import moment from "moment";
 
-import './Message.scss';
+import "./Message.scss";
 
 class Message extends Component {
   render() {

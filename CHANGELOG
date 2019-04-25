@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Black format python code
 - Upgrade web-client dependencies (Notable change: React 16)
 - Rename js files to jsx
-
+- Prettier format JS/SCSS
 
 ## [1.1.0] - 2017-03-27
 ### Changed

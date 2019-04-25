@@ -1,20 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TestUtils from 'react-dom/test-utils';
-import { shallow, mount, render } from 'enzyme';
-import fetchMock from 'fetch-mock';
-import sinon from 'sinon';
+import React from "react";
+import ReactDOM from "react-dom";
+import TestUtils from "react-dom/test-utils";
+import { shallow, mount, render } from "enzyme";
+import fetchMock from "fetch-mock";
+import sinon from "sinon";
 
-import App from './App';
-import Login from './users/Login';
-import Registration from './users/Registration';
-import Wall from './wall/Wall';
-import Warning from './Warning';
+import App from "./App";
+import Login from "./users/Login";
+import Registration from "./users/Registration";
+import Wall from "./wall/Wall";
+import Warning from "./Warning";
 
-const querySelector = sinon.stub(document, 'querySelector');
+const querySelector = sinon.stub(document, "querySelector");
 
-describe('App handleError suite', () => {
-  it('sets a friendly error message', () => {
+describe("App handleError suite", () => {
+  it("sets a friendly error message", () => {
     const wrapper = shallow(<App />);
 
     const exception = {};
@@ -23,22 +23,22 @@ describe('App handleError suite', () => {
     expect(wrapper.state().hasErrors).toBe(true);
     expect(wrapper.state().errors).toMatchObject({
       global:
-        'Uh-oh. Something went wrong. Please check ' +
-        'your internet connection. If the problem still persists, ' +
-        'please contact us.'
+        "Uh-oh. Something went wrong. Please check " +
+        "your internet connection. If the problem still persists, " +
+        "please contact us."
     });
   });
 });
 
-describe('App loadMessages suite', () => {
+describe("App loadMessages suite", () => {
   afterEach(() => {
     fetchMock.reset();
     fetchMock.restore();
   });
 
-  it('does not set messages if array is empty', async () => {
+  it("does not set messages if array is empty", async () => {
     const test_messages = [];
-    fetchMock.get('/api/wall/', {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: JSON.stringify(test_messages)
     });
@@ -52,29 +52,29 @@ describe('App loadMessages suite', () => {
         key: 1,
         message: "It's a bit quiet in here...",
         user: {
-          username: 'Chat Wall',
+          username: "Chat Wall",
           avatar:
-            'https://www.gravatar.com/avatar/40d9c9117dd26facbe8967fc0e516easd?d=mm'
+            "https://www.gravatar.com/avatar/40d9c9117dd26facbe8967fc0e516easd?d=mm"
         },
-        timestamp: '2017-03-15T19:02:24.401542Z'
+        timestamp: "2017-03-15T19:02:24.401542Z"
       }
     ]);
   });
 
-  it('sets messages to the correct value', async () => {
+  it("sets messages to the correct value", async () => {
     const test_messages = [
       {
         key: 1,
-        message: 'Mocked message',
+        message: "Mocked message",
         user: {
-          username: 'Chat Wall',
+          username: "Chat Wall",
           avatar:
-            'https://www.gravatar.com/avatar/40d9c9117dd26facbe8967fc0e516easd?d=mm'
+            "https://www.gravatar.com/avatar/40d9c9117dd26facbe8967fc0e516easd?d=mm"
         },
-        timestamp: '2017-03-15T19:02:24.401542Z'
+        timestamp: "2017-03-15T19:02:24.401542Z"
       }
     ];
-    fetchMock.get('/api/wall/', {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: JSON.stringify(test_messages)
     });
@@ -87,7 +87,7 @@ describe('App loadMessages suite', () => {
   });
 });
 
-describe('App componentDidMount suite', () => {
+describe("App componentDidMount suite", () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
@@ -96,17 +96,17 @@ describe('App componentDidMount suite', () => {
     jest.useRealTimers();
   });
 
-  it('sets a timer to call loadMessages', () => {
+  it("sets a timer to call loadMessages", () => {
     const wrapper = shallow(<App />);
 
     let test_response = wrapper.instance().componentDidMount();
-    expect(typeof wrapper.instance().timer).toBe('number');
+    expect(typeof wrapper.instance().timer).toBe("number");
     expect(setInterval.mock.calls.length).toBeGreaterThanOrEqual(1);
     expect(setInterval.mock.calls[0][1]).toBe(5000);
   });
 });
 
-describe('App componentWillUnmount suite', () => {
+describe("App componentWillUnmount suite", () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
@@ -115,48 +115,48 @@ describe('App componentWillUnmount suite', () => {
     jest.useRealTimers();
   });
 
-  it('clears the timer', () => {
+  it("clears the timer", () => {
     const wrapper = shallow(<App />);
     wrapper.timer = setInterval(() => {}, 500);
     let test_response = wrapper.instance().componentWillUnmount();
-    expect(typeof wrapper.instance().timer).toBe('undefined');
+    expect(typeof wrapper.instance().timer).toBe("undefined");
   });
 });
 
-describe('App handleRegisterClick suite', () => {
-  it('sets display to registration', () => {
+describe("App handleRegisterClick suite", () => {
+  it("sets display to registration", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({
-      display: 'wall'
+      display: "wall"
     });
 
-    const event = new Event('click');
+    const event = new Event("click");
     let test_response = wrapper.instance().handleRegisterClick(event);
-    expect(wrapper.state().display).toBe('registration');
+    expect(wrapper.state().display).toBe("registration");
   });
 });
 
-describe('App handleLoginClick suite', () => {
-  it('sets display to login', () => {
+describe("App handleLoginClick suite", () => {
+  it("sets display to login", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({
-      display: 'wall'
+      display: "wall"
     });
 
-    const event = new Event('click');
+    const event = new Event("click");
     let test_response = wrapper.instance().handleLoginClick(event);
-    expect(wrapper.state().display).toBe('login');
+    expect(wrapper.state().display).toBe("login");
   });
 });
 
-describe('App checkStatus suite', () => {
-  it('sets hasErrors to false and returns the response for 2** responses', () => {
+describe("App checkStatus suite", () => {
+  it("sets hasErrors to false and returns the response for 2** responses", () => {
     const wrapper = shallow(<App />);
 
     for (let i = 200; i < 300; i++) {
       wrapper.setState({
         hasErrors: true,
-        errors: { detail: 'An error' }
+        errors: { detail: "An error" }
       });
       let response = {
         status: i
@@ -168,14 +168,14 @@ describe('App checkStatus suite', () => {
     }
   });
 
-  it('sets hasErrors to true and returns the response for error responses', () => {
+  it("sets hasErrors to true and returns the response for error responses", () => {
     const wrapper = shallow(<App />);
 
     const sample_of_errors = [301, 401, 403, 500];
     for (let i = 0; i < sample_of_errors.length; i++) {
       wrapper.setState({
         hasErrors: false,
-        errors: { detail: 'An error' }
+        errors: { detail: "An error" }
       });
       let response = {
         status: sample_of_errors[i]
@@ -186,7 +186,7 @@ describe('App checkStatus suite', () => {
   });
 });
 
-describe('App doRegistration suite', () => {
+describe("App doRegistration suite", () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
@@ -198,62 +198,62 @@ describe('App doRegistration suite', () => {
     sinon.stub.reset();
   });
 
-  it('submits the form', async () => {
+  it("submits the form", async () => {
     fetchMock
-      .get('/api/wall/', {
+      .get("/api/wall/", {
         status: 200,
         body: JSON.stringify([])
       })
-      .post('/api/users/', {
+      .post("/api/users/", {
         status: 200,
         body: JSON.stringify({
-          username: 'My-Username',
-          email: 'my@email.com'
+          username: "My-Username",
+          email: "my@email.com"
         })
       });
-    fetchMock.post('/api/users/token/', {
+    fetchMock.post("/api/users/token/", {
       status: 200,
       body: JSON.stringify({
-        token: 'my-token'
+        token: "my-token"
       })
     });
 
-    const form = document.createElement('form');
-    const username_input = document.createElement('input', {
-      name: 'username',
-      value: 'My-Username'
+    const form = document.createElement("form");
+    const username_input = document.createElement("input", {
+      name: "username",
+      value: "My-Username"
     });
     form.appendChild(username_input);
-    const email_input = document.createElement('input', {
-      name: 'email',
-      value: 'my@email.com'
+    const email_input = document.createElement("input", {
+      name: "email",
+      value: "my@email.com"
     });
     form.appendChild(email_input);
-    const password_input = document.createElement('input', {
-      name: 'password',
-      value: 'My-Password'
+    const password_input = document.createElement("input", {
+      name: "password",
+      value: "My-Password"
     });
     form.appendChild(password_input);
     querySelector.returns(form);
 
     const wrapper = shallow(<App />);
 
-    const event = new Event('submit');
+    const event = new Event("submit");
     await wrapper.instance().doRegistration(event);
 
-    expect(JSON.stringify(fetchMock.calls('/api/users/'))).toEqual(
+    expect(JSON.stringify(fetchMock.calls("/api/users/"))).toEqual(
       JSON.stringify([
-        ['/api/users/', { method: 'POST', body: new FormData(form) }]
+        ["/api/users/", { method: "POST", body: new FormData(form) }]
       ])
     );
     expect(localStorage.token).toBe(undefined);
     expect(wrapper.state().token).toBe(undefined);
     // Logging in returns you to the wall
-    expect(wrapper.state().display).toBe('wall');
+    expect(wrapper.state().display).toBe("wall");
   });
 });
 
-describe('App doLogin suite', () => {
+describe("App doLogin suite", () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.runAllImmediates();
@@ -266,94 +266,94 @@ describe('App doLogin suite', () => {
     sinon.stub.reset();
   });
 
-  it('sets the token to the correct value', async () => {
+  it("sets the token to the correct value", async () => {
     fetchMock
-      .get('/api/wall/', {
+      .get("/api/wall/", {
         status: 200,
         body: JSON.stringify([])
       })
-      .post('/api/users/token/', {
+      .post("/api/users/token/", {
         status: 200,
         body: JSON.stringify({
-          token: 'my-token'
+          token: "my-token"
         })
       });
 
-    const form = document.createElement('form');
-    const username_input = document.createElement('input', {
-      name: 'username',
-      value: 'My-Username'
+    const form = document.createElement("form");
+    const username_input = document.createElement("input", {
+      name: "username",
+      value: "My-Username"
     });
     form.appendChild(username_input);
-    const password_input = document.createElement('input', {
-      name: 'password',
-      value: 'My-Password'
+    const password_input = document.createElement("input", {
+      name: "password",
+      value: "My-Password"
     });
     form.appendChild(password_input);
     querySelector.returns(form);
 
     const wrapper = shallow(<App />);
 
-    const event = new Event('submit');
+    const event = new Event("submit");
     await wrapper.instance().doLogin(event);
 
-    expect(localStorage.token).toBe('my-token');
-    expect(wrapper.state().token).toBe('my-token');
+    expect(localStorage.token).toBe("my-token");
+    expect(wrapper.state().token).toBe("my-token");
     // Logging in returns you to the wall
-    expect(wrapper.state().display).toBe('wall');
+    expect(wrapper.state().display).toBe("wall");
   });
 
-  it('sets specific errors', async () => {
+  it("sets specific errors", async () => {
     fetchMock
-      .get('/api/wall/', {
+      .get("/api/wall/", {
         status: 200,
         body: JSON.stringify([])
       })
-      .post('/api/users/token/', {
+      .post("/api/users/token/", {
         status: 401,
         body: JSON.stringify({
-          details: 'Not authorized'
+          details: "Not authorized"
         })
       });
 
-    const form = document.createElement('form');
-    const username_input = document.createElement('input', {
-      name: 'username',
-      value: 'My-Username'
+    const form = document.createElement("form");
+    const username_input = document.createElement("input", {
+      name: "username",
+      value: "My-Username"
     });
     form.appendChild(username_input);
-    const password_input = document.createElement('input', {
-      name: 'password',
-      value: 'My-Password'
+    const password_input = document.createElement("input", {
+      name: "password",
+      value: "My-Password"
     });
     form.appendChild(password_input);
     querySelector.returns(form);
 
     const wrapper = shallow(<App />);
 
-    const event = new Event('submit');
+    const event = new Event("submit");
     await wrapper.instance().doLogin(event);
 
-    expect(JSON.stringify(fetchMock.calls('/api/users/token/'))).toEqual(
+    expect(JSON.stringify(fetchMock.calls("/api/users/token/"))).toEqual(
       JSON.stringify([
-        ['/api/users/token/', { method: 'POST', body: new FormData(form) }]
+        ["/api/users/token/", { method: "POST", body: new FormData(form) }]
       ])
     );
-    expect(localStorage.token).toBe('undefined');
+    expect(localStorage.token).toBe("undefined");
     expect(wrapper.state().token).toBe(undefined);
     expect(wrapper.state().hasErrors).toBe(true);
-    expect(wrapper.state().errors).toMatchObject({ details: 'Not authorized' });
+    expect(wrapper.state().errors).toMatchObject({ details: "Not authorized" });
   });
 });
 
-describe('App doLogout suite', () => {
-  it('sets the token to undefined', () => {
+describe("App doLogout suite", () => {
+  it("sets the token to undefined", () => {
     const wrapper = shallow(<App />);
 
-    localStorage.setItem('token', 'my-token');
+    localStorage.setItem("token", "my-token");
     wrapper.setState({
       token: localStorage.token,
-      display: 'login'
+      display: "login"
     });
 
     wrapper.instance().doLogout();
@@ -361,97 +361,97 @@ describe('App doLogout suite', () => {
     expect(localStorage.token).toBe(undefined);
     expect(wrapper.state().token).toBe(undefined);
     // Logging out returns you to the wall
-    expect(wrapper.state().display).toBe('wall');
+    expect(wrapper.state().display).toBe("wall");
   });
 });
 
-describe('App createMessage suite', () => {
+describe("App createMessage suite", () => {
   afterEach(() => {
     fetchMock.reset();
     fetchMock.restore();
   });
 
-  it('creates a message', async () => {
-    fetchMock.get('/api/wall/', {
+  it("creates a message", async () => {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: JSON.stringify([])
     });
-    fetchMock.post('/api/wall/', {
+    fetchMock.post("/api/wall/", {
       status: 200,
       body: JSON.stringify({
-        message: 'I am a message.'
+        message: "I am a message."
       })
     });
 
     const wrapper = shallow(<App />);
     wrapper.setState({
-      token: 'my-token'
+      token: "my-token"
     });
 
     wrapper.type.prototype.loadMessages = jest.fn();
 
-    const event = new Event('submit');
-    await wrapper.instance().createMessage(event, 'I am a message');
+    const event = new Event("submit");
+    await wrapper.instance().createMessage(event, "I am a message");
 
-    expect(fetchMock.called('/api/wall/')).toBe(true);
-    expect(JSON.stringify(fetchMock.calls('/api/wall/'))).toEqual(
+    expect(fetchMock.called("/api/wall/")).toBe(true);
+    expect(JSON.stringify(fetchMock.calls("/api/wall/"))).toEqual(
       JSON.stringify([
-        ['/api/wall/', undefined],
+        ["/api/wall/", undefined],
         [
           // The Post to create the message
-          '/api/wall/',
+          "/api/wall/",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              Authorization: 'Token my-token',
-              HTTP_Authorization: 'Token my-token',
-              origin: 'Token my-token',
-              'content-type': 'application/json'
+              Authorization: "Token my-token",
+              HTTP_Authorization: "Token my-token",
+              origin: "Token my-token",
+              "content-type": "application/json"
             },
             body: '{"message":"I am a message"}'
           }
         ],
         [
           // Load messages is called after create message
-          '/api/wall/',
+          "/api/wall/",
           undefined
         ]
       ])
     );
   });
 
-  it('sets specific errors', async () => {
+  it("sets specific errors", async () => {
     fetchMock
-      .get('/api/wall/', {
+      .get("/api/wall/", {
         status: 200,
         body: JSON.stringify([])
       })
-      .post('/api/wall/', {
+      .post("/api/wall/", {
         status: 403,
         body: JSON.stringify({
-          details: 'No auth token'
+          details: "No auth token"
         })
       });
 
     const wrapper = shallow(<App />);
     wrapper.type.prototype.loadMessages = jest.fn();
 
-    const event = new Event('submit');
-    await wrapper.instance().createMessage(event, 'I am a message');
+    const event = new Event("submit");
+    await wrapper.instance().createMessage(event, "I am a message");
 
-    expect(fetchMock.called('/api/wall/')).toBe(true);
-    expect(JSON.stringify(fetchMock.calls('/api/wall/'))).toEqual(
+    expect(fetchMock.called("/api/wall/")).toBe(true);
+    expect(JSON.stringify(fetchMock.calls("/api/wall/"))).toEqual(
       JSON.stringify([
-        ['/api/wall/', undefined],
+        ["/api/wall/", undefined],
         [
-          '/api/wall/',
+          "/api/wall/",
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              Authorization: 'Token undefined',
-              HTTP_Authorization: 'Token undefined',
-              origin: 'Token undefined',
-              'content-type': 'application/json'
+              Authorization: "Token undefined",
+              HTTP_Authorization: "Token undefined",
+              origin: "Token undefined",
+              "content-type": "application/json"
             },
             body: '{"message":"I am a message"}'
           }
@@ -460,20 +460,20 @@ describe('App createMessage suite', () => {
     );
 
     expect(wrapper.state().hasErrors).toBe(true);
-    expect(wrapper.state().errors).toMatchObject({ details: 'No auth token' });
+    expect(wrapper.state().errors).toMatchObject({ details: "No auth token" });
   });
 });
 
-describe('App loggedIn suite', () => {
-  it('returns true if token present', () => {
+describe("App loggedIn suite", () => {
+  it("returns true if token present", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({
-      token: 'my-token'
+      token: "my-token"
     });
     expect(wrapper.instance().loggedIn()).toBe(true);
   });
 
-  it('returns false if token is undefined', () => {
+  it("returns false if token is undefined", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({
       token: undefined
@@ -482,76 +482,76 @@ describe('App loggedIn suite', () => {
   });
 });
 
-describe('App render suite', () => {
+describe("App render suite", () => {
   afterEach(() => {
     fetchMock.reset();
     fetchMock.restore();
   });
 
-  it('renders without crashing', () => {
-    fetchMock.get('/api/wall/', {
+  it("renders without crashing", () => {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: []
     });
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     ReactDOM.render(<App />, div);
   });
 
-  it('renders the wall component', () => {
-    fetchMock.get('/api/wall/', {
+  it("renders the wall component", () => {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: []
     });
     const component = TestUtils.renderIntoDocument(<App />);
-    component.setState({ display: 'wall', token: 'my-token' });
+    component.setState({ display: "wall", token: "my-token" });
 
     TestUtils.findRenderedComponentWithType(component, Wall);
   });
 
-  it('renders the registration component', () => {
-    fetchMock.get('/api/wall/', {
+  it("renders the registration component", () => {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: []
     });
     const component = TestUtils.renderIntoDocument(<App />);
-    component.setState({ display: 'registration' });
+    component.setState({ display: "registration" });
 
     TestUtils.findRenderedComponentWithType(component, Registration);
   });
 
-  it('renders the login component', () => {
-    fetchMock.get('/api/wall/', {
+  it("renders the login component", () => {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: []
     });
     const component = TestUtils.renderIntoDocument(<App />);
-    component.setState({ display: 'login' });
+    component.setState({ display: "login" });
 
     TestUtils.findRenderedComponentWithType(component, Login);
   });
 
-  it('falls back to rendering the wall component', () => {
-    fetchMock.get('/api/wall/', {
+  it("falls back to rendering the wall component", () => {
+    fetchMock.get("/api/wall/", {
       status: 200,
       body: []
     });
     const component = TestUtils.renderIntoDocument(<App />);
-    component.setState({ display: 'fallback', token: 'my-token' });
+    component.setState({ display: "fallback", token: "my-token" });
 
     TestUtils.findRenderedComponentWithType(component, Wall);
   });
 
-  it('renders global errors', () => {
+  it("renders global errors", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({
       hasErrors: true,
-      errors: { global: 'Global error' }
+      errors: { global: "Global error" }
     });
 
     expect(wrapper.contains(<Warning warning="Global error" />)).toBe(true);
   });
 
-  it('renders login and register buttons', () => {
+  it("renders login and register buttons", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ token: undefined });
     expect(wrapper.html()).toContain(
@@ -562,9 +562,9 @@ describe('App render suite', () => {
     );
   });
 
-  it('renders logout button', () => {
+  it("renders logout button", () => {
     const wrapper = shallow(<App />);
-    wrapper.setState({ token: 'my-token' });
+    wrapper.setState({ token: "my-token" });
     expect(wrapper.html()).toContain(
       '<button class="btn btn-default btn-sm">Logout</button>'
     );
