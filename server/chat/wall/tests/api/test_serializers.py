@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import hashlib
 
 from django.test import TestCase
@@ -13,12 +11,15 @@ class MessageSerializerTest(TestCase):
         message = MessageFactory()
         serializer = MessageSerializer(message)
 
-        self.assertEqual(serializer.data["key"], hashlib.md5(str(message.id).encode("utf-8")).hexdigest())
+        self.assertEqual(
+            serializer.data["key"],
+            hashlib.md5(str(message.id).encode("utf-8")).hexdigest(),
+        )
         self.assertEqual(serializer.data["message"], message.message)
         self.assertEqual(serializer.data["user"]["username"], message.user.username)
         self.assertEqual(
             serializer.data["timestamp"],
-            message.timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            message.timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         )
 
     def test_get_key(self):
@@ -26,8 +27,7 @@ class MessageSerializerTest(TestCase):
         serializer = MessageSerializer(message)
 
         self.assertEqual(
-            serializer.get_key(message),
-            "c4ca4238a0b923820dcc509a6f75849b"
+            serializer.get_key(message), "c4ca4238a0b923820dcc509a6f75849b"
         )
 
     def test_get_key__dict(self):

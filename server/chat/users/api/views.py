@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from rest_framework.generics import CreateAPIView
 from rest_framework.validators import ValidationError
 
@@ -11,8 +9,8 @@ class UserCreateAPIView(CreateAPIView):
     serializer_class = UserSerializer
 
     def perform_create(self, serializer):
-        if self.request.user.is_authenticated():
-            raise ValidationError('You have already signed up')
+        if self.request.user.is_authenticated:
+            raise ValidationError("You have already signed up")
         user = serializer.save()
         user.set_password(serializer.data["password"])
         send_welcome_email(user=user)

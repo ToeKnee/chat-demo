@@ -3,11 +3,11 @@
 from distutils.core import setup
 
 setup(
-    name='Chat',
-    version='1.1.0',
-    description='Simple Chat Wall',
-    author='Anthony Batchelor',
-    author_email='tony@ynottony.net',
-    url='https://ten.ynottony.net/',
-    packages=['chat', 'users', 'wall'],
+    name="Chat",
+    version="2.0.0",
+    description="Simple Chat Wall",
+    author="Anthony Batchelor",
+    author_email="tony@ynottony.net",
+    url="https://ten.ynottony.net/",
+    packages=["chat", "users", "wall"],
 )
