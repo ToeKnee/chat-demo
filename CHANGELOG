@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.0] - 2019-04-25
+### Changed
+- Drop Python 2.7 support
+- Upgrade server dependencies (Notable change: Django 2.2)
+
+
 ## [1.1.0] - 2017-03-27
 ### Changed
 - Messages now render Markdown syntax
