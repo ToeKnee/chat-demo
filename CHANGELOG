@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Upgrade server dependencies (Notable change: Django 2.2)
 - Black format python code
 - Upgrade web-client dependencies (Notable change: React 16)
+- Rename js files to jsx
 
 
 ## [1.1.0] - 2017-03-27
