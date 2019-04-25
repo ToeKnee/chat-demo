@@ -11,7 +11,7 @@ Full API documentation can be found in docs/API.md
     cd server/chat/
     virtualenv env -p python3
     source env/bin/activate
-    pip install -r requirements.txt
+    pip install -r requirements/base.txt
     ./manage.py migrate
 
 ### Run the server
@@ -20,9 +20,10 @@ Full API documentation can be found in docs/API.md
 
 ### Running tests
 
-I have set up a simple `tox.ini` to test the server against python 2.7
-and 3.5. If you don't have one of those environments, you will need to
-edit `tox.ini` to match your environment.
+I have set up a simple `tox.ini` to test the server against python 3.7
+and 3.5 and an bleeding edge `canary` build. If you don't have one of
+those environments, you will need to edit `tox.ini` to match your
+environment.
 
 Run all environments
 
@@ -30,16 +31,12 @@ Run all environments
 
 or just one
 
-    tox -e py27
-
-Note: I would usually set up tox to test all supported environments
-(and versions of Django) and a "canary" build that tests unpinned
-dependencies to get a heads up when things will break.
+    tox -e py37
 
 ### Main Technologies
 
 * Python 3
-* Django 1.10
+* Django 2.2.0
 * Django Rest Framework
 
 
