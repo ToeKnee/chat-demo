@@ -1,5 +1,3 @@
-
-
 from django.core.mail import send_mail
 
 
@@ -25,9 +23,9 @@ Kind Regards,
     )
 
     send_mail(
-        'Welcome to Chat Wall',
+        "Welcome to Chat Wall",
         message,
-        'chat@chatwall.com',
+        "chat@chatwall.com",
         [user.email],
         fail_silently=False,
     )

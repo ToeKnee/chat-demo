@@ -1,5 +1,3 @@
-
-
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -13,14 +11,11 @@ class Message(models.Model):
         settings.AUTH_USER_MODEL,
         verbose_name=_("User"),
         related_name="messages",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     message = models.TextField(_("Message"))
     timestamp = models.DateTimeField(
-        _("Timestamp"),
-        default=timezone.now,
-        editable=False,
-        db_index=True
+        _("Timestamp"), default=timezone.now, editable=False, db_index=True
     )
 
     def __str__(self):

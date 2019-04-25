@@ -1,5 +1,3 @@
-
-
 import hashlib
 
 from rest_framework import serializers
@@ -13,7 +11,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ('key', 'message', 'user', 'timestamp')
+        fields = ("key", "message", "user", "timestamp")
 
     def get_key(self, obj):
         """ Return a hash of the ID

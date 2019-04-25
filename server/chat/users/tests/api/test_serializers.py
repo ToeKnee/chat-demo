@@ -1,5 +1,3 @@
-
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -17,11 +15,7 @@ class UserSerializerTest(TestCase):
 
     def test_create(self):
         user = UserFactory.build()
-        data = {
-            "username": user.username,
-            "email": user.email,
-            "password": "let-me-in",
-        }
+        data = {"username": user.username, "email": user.email, "password": "let-me-in"}
         serializer = UserSerializer()
 
         test_user = serializer.create(validated_data=data)
@@ -39,9 +33,7 @@ class UserReadOnlySerializerTest(TestCase):
 
     def test_create(self):
         user = UserFactory.build()
-        data = {
-            "username": user.username,
-        }
+        data = {"username": user.username}
         serializer = UserReadOnlySerializer()
         test_user = serializer.create(validated_data=data)
 
@@ -50,9 +42,7 @@ class UserReadOnlySerializerTest(TestCase):
 
     def test_update(self):
         user = UserFactory()
-        data = {
-            "username": "change-username",
-        }
+        data = {"username": "change-username"}
         serializer = UserReadOnlySerializer()
         test_user = serializer.update(instance=user, validated_data=data)
 
@@ -66,5 +56,5 @@ class UserReadOnlySerializerTest(TestCase):
 
         self.assertEqual(
             serializer.get_avatar(user),
-            "https://www.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?d=mm"
+            "https://www.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?d=mm",
         )

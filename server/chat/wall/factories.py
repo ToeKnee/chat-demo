@@ -1,5 +1,3 @@
-
-
 import factory
 
 from users.factories import UserFactory
@@ -11,4 +9,4 @@ class MessageFactory(factory.django.DjangoModelFactory):
         model = Message
 
     user = factory.SubFactory(UserFactory)
-    message = factory.Faker('paragraph')
+    message = factory.Faker("paragraph")

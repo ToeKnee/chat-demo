@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Drop Python 2.7 support
 - Upgrade server dependencies (Notable change: Django 2.2)
-
+- Black format python code
 
 ## [1.1.0] - 2017-03-27
 ### Changed
